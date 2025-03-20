@@ -1,0 +1,15 @@
+[Unit]
+Description=Vaultwarden service with docker compose
+Requires=docker.service
+PartOf=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+WorkingDirectory=/home/j7z/sh-vaultwarden
+ExecStart=/usr/local/bin/docker compose up -d
+ExecStop=/usr/local/bin/docker compose down
+
+[Install]
+WantedBy=multi-user.target

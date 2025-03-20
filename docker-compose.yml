@@ -1,0 +1,38 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    env_file: ./vaultwarden/vaultwarden.env
+    volumes:
+      - ./vaultwarden/data:/data
+    networks:
+      - internal
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - ${PRIVATE_IP_ADDRESS}:80:80
+      - ${PRIVATE_IP_ADDRESS}:443:443
+      - 127.0.0.1:80:80
+      - 127.0.0.1:443:443
+    volumes:
+      # Custom build of caddy arm64, cloudflare, and duckdns
+      # https://caddyserver.com/download?package=github.com%2Fcaddy-dns%2Fcloudflare&package=github.com%2Fcaddy-dns%2Fduckdns
+      - ./caddy/caddy:/usr/bin/caddy
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/caddy-config:/config
+      - ./caddy/caddy-data:/data
+    env_file: ./caddy/caddy.env
+    networks:
+      - internal
+      - external
+
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  external:
+    driver: bridge
