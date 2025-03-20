@@ -20,11 +20,13 @@
 #### DNS Record
 
 Domain: _vaultwarden.jasonpilz.com_
+
 Values: `A | vaultwarden | <PRIVATE_IP_ADDRESS> | DNS only - reserved IP | Auto`
 
 #### API Token
 
 Name: **Edit zone DNS Vaultwarden**
+
 Settings: `jasonpilz.com - Zone:Read, DNS:Edit`
 
 ### Unifi Controller Configuration
@@ -40,12 +42,12 @@ sudo systemctl enable vaultwarden.service
 sudo systemctl start vaultwarden.service
 ```
 
-**Check Status
+**Check Status**
 ```bash
 sudo systemctl status vaultwarden.service
 ```
 
-**Check it Starts at Boot
+**Check it Starts at Boot**
 ```bash
 sudo reboot
 ...
