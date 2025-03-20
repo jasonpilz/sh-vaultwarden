@@ -1,35 +1,35 @@
 {
-  admin off
-  email {$EMAIL}
-  log {
-    output file {$CADDY_LOG_FILE} {
-      roll_size 10MB
-      roll_keep 10
-    }
-  }
+	admin off
+	email {$EMAIL}
+	log {
+		output file {$CADDY_LOG_FILE} {
+			roll_size 10MB
+			roll_keep 10
+		}
+	}
 }
 
 {$CLOUDFLARE_DOMAIN}:443 {
-  log {
-    level INFO
-    output file {$CLOUDFLARE_LOG_FILE} {
-      roll_size 10MB
-      roll_keep 10
-    }
-  }
+	log {
+		level INFO
+		output file {$CLOUDFLARE_LOG_FILE} {
+			roll_size 10MB
+			roll_keep 10
+		}
+	}
 
-  skip_log /icons/*
+	log_skip /icons/*
 
-  # Use the ACME DNS-01 challenge to get a cert for the configured domain.
-  tls {
-      dns cloudflare {$CLOUDFLARE_API_TOKEN}
-  }
+	# Use the ACME DNS-01 challenge to get a cert for the configured domain.
+	tls {
+		dns cloudflare {$CLOUDFLARE_API_TOKEN}
+	}
 
-  # This setting may have compatibility issues with some browsers
-  # (e.g., attachment downloading on Firefox). Try disabling this
-  # if you encounter issues.
-  encode gzip
+	# This setting may have compatibility issues with some browsers
+	# (e.g., attachment downloading on Firefox). Try disabling this
+	# if you encounter issues.
+	encode gzip
 
-  # Proxy everything to Rocket
-  reverse_proxy vaultwarden:{$ROCKET_PORT}
+	# Proxy everything to Rocket
+	reverse_proxy vaultwarden:{$ROCKET_PORT}
 }
